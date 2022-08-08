@@ -1,0 +1,73 @@
+apiVersion: charts.my.domain/v1alpha1
+kind: LabelStudioEnterprise
+metadata:
+  name: labelstudioenterprise-sample
+spec:
+  # Default values copied from <project_dir>/helm-charts/label-studio-enterprise/values.yaml
+  global:
+    imagePullSecrets:
+      # Defined with earlier kubectl command
+      - name: heartex-pull-key
+    
+    # This value refers to the Kubernetes secret that you 
+    # created that contains your enterprise license.
+    enterpriseLicense:
+      secretName: "lse-license"
+      secretKey: "license"
+    pgConfig:
+      # PostgreSql instance hostname
+      host: "postgresql"
+      # PostgreSql database name
+      dbName: "my-database"
+      # PostgreSql username
+      userName: "postgres"
+      # PostgreSql password secret coordinates within Kubernetes secrets 
+      password:
+        secretName: "postgresql"
+        secretKey: "postgresql-password"
+
+    redisConfig:
+      # Redis connection string
+      host: redis://127.0.0.1:6379/db
+
+    # extraEnvironmentVars is a list of extra environment variables to set in the deployment, empty by default
+    extraEnvironmentVars: {}
+    # extraEnvironmentSecrets is a list of extra environment secrets to set in the deployment, empty by default
+    extraEnvironmentSecrets: {}
+
+    # Persistence is turned off by default.
+    # See more in the [Set up persistent storage](https://labelstud.io/guide/persistent_storage.html)
+    persistence:
+      enabled: false
+
+  app:
+    # High Availability (HA) mode: adjust according to your resources
+    replicas: 1
+    # Ingress config for Label Studio
+    ingress:
+      host: studio.yourdomain.com
+      # You might need to set path to '/*' in order to use this with ALB ingress controllers.
+      path: /
+      # Annotations required for your ingress controller, empty by default 
+      annotations: {}
+  # if you have cert-manager, uncomment the next section
+  #    tls:
+  #      - secretName: ssl-cert-studio.yourdomain.com
+  #        hosts:
+  #          - studio.yourdomain.com
+
+  # default compute resources run label studio enterprise for a basic install. adjust according to your business needs
+    resources:
+      requests:
+        memory: 1024Mi
+        cpu: 1000m
+      limits:
+        memory: 6144Mi
+        cpu: 4000m
+
+  rqworker:
+    # HA mode: adjust according to your resources
+    replicas: 2
+
+  minio:
+    enabled: false

@@ -1,0 +1,6 @@
+# Use the 'create api' subcommand to add watches to this file.
+- group: charts.my.domain
+  version: v1alpha1
+  kind: LabelStudioEnterprise
+  chart: helm-charts/label-studio-enterprise
+#+kubebuilder:scaffold:watch
