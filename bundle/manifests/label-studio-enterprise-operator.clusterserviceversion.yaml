@@ -1,0 +1,411 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: ClusterServiceVersion
+metadata:
+  annotations:
+    alm-examples: |-
+      [
+        {
+          "apiVersion": "charts.my.domain/v1alpha1",
+          "kind": "LabelStudioEnterprise",
+          "metadata": {
+            "name": "labelstudioenterprise-sample"
+          },
+          "spec": {
+            "app": {
+              "ingress": {
+                "annotations": {},
+                "host": "label-studio.apps.yash-label-studio.coreostrain.me",
+                "path": "/"
+              },
+              "replicas": 1
+            },
+            "global": {
+              "enterpriseLicense": {
+                "secretKey": "license",
+                "secretName": "lse-license"
+              },
+              "extraEnvironmentSecrets": {},
+              "extraEnvironmentVars": {},
+              "imagePullSecrets": [
+                {
+                  "name": "heartex-pull-key"
+                }
+              ],
+              "persistence": {
+                "config": {
+                  "s3": {
+                    "accessKey": "",
+                    "bucket": "labelstudio-helm-test",
+                    "folder": "",
+                    "region": "us-east-1",
+                    "secretKey": ""
+                  }
+                },
+                "enabled": true,
+                "type": "s3"
+              },
+              "pgConfig": {
+                "dbName": "postgres",
+                "host": "postgresql",
+                "password": {
+                  "secretKey": "postgres-password",
+                  "secretName": "postgresql"
+                },
+                "userName": "postgres"
+              },
+              "redisConfig": {
+                "host": ""
+              }
+            },
+            "minio": {
+              "enabled": false
+            }
+          }
+        }
+      ]
+    capabilities: Basic Install
+    operators.operatorframework.io/builder: operator-sdk-v1.22.2
+    operators.operatorframework.io/project_layout: helm.sdk.operatorframework.io/v1
+  name: label-studio-enterprise-operator.v0.0.1
+  namespace: placeholder
+spec:
+  apiservicedefinitions: {}
+  customresourcedefinitions:
+    owned:
+    - kind: LabelStudioEnterprise
+      name: labelstudioenterprises.charts.my.domain
+      version: v1alpha1
+      specDescriptors:
+      - displayName: annotations
+        path: app.ingress.annotations
+        x-descriptors:
+        - 'urn:alm:descriptor:com.tectonic.ui:text'
+        - 'urn:alm:descriptor:com.tectonic.ui:fieldGroup:app.ingress'
+      - displayName: host
+        path: app.ingress.host
+        x-descriptors:
+        - 'urn:alm:descriptor:com.tectonic.ui:text'
+        - 'urn:alm:descriptor:com.tectonic.ui:fieldGroup:app.ingress'
+      - displayName: path
+        path: app.ingress.path
+        x-descriptors:
+        - 'urn:alm:descriptor:com.tectonic.ui:text'
+        - 'urn:alm:descriptor:com.tectonic.ui:fieldGroup:app.ingress'
+      - displayName: replicas
+        path: app
+        x-descriptors:
+        - 'urn:alm:descriptor:com.tectonic.ui:number'
+        - 'urn:alm:descriptor:com.tectonic.ui:fieldGroup:app'
+      - displayName: Enterprise License Secret Key
+        path: global.enterpriseLicense.secretKey
+        x-descriptors:
+        - 'urn:alm:descriptor:com.tectonic.ui:text'
+        - 'urn:alm:descriptor:com.tectonic.ui:fieldGroup:global'
+      - displayName: Enterprise License Secret Name
+        path: global.enterpriseLicense.secretName
+        x-descriptors:
+        - 'urn:alm:descriptor:com.tectonic.ui:text'
+        - 'urn:alm:descriptor:com.tectonic.ui:fieldGroup:global'
+      - displayName: Extra Environment Secrets
+        path: global.extraEnvironmentSecrets
+        x-descriptors:
+        - 'urn:alm:descriptor:com.tectonic.ui:text'
+        - 'urn:alm:descriptor:com.tectonic.ui:fieldGroup:global'
+      - displayName: Extra Environment Variables
+        path: global.extraEnvironmentVars
+        x-descriptors:
+        - 'urn:alm:descriptor:com.tectonic.ui:text'
+        - 'urn:alm:descriptor:com.tectonic.ui:fieldGroup:global'
+      - displayName: Image Pull Secrets
+        path: global.imagePullSecrets
+        x-descriptors:
+        - 'urn:alm:descriptor:com.tectonic.ui:text'
+        - 'urn:alm:descriptor:com.tectonic.ui:fieldGroup:global'
+      - displayName: Persistence Config
+        path: global.persistence.config
+        x-descriptors:
+        - 'urn:alm:descriptor:com.tectonic.ui:text'
+        - 'urn:alm:descriptor:com.tectonic.ui:fieldGroup:global'
+      - displayName: Persistence Enabled
+        path: global.persistence.enabled
+        x-descriptors:
+        - 'urn:alm:descriptor:com.tectonic.ui:boolean'
+        - 'urn:alm:descriptor:com.tectonic.ui:fieldGroup:global'
+      - displayName: Persistence Type
+        path: global.persistence.type
+        x-descriptors:
+        - 'urn:alm:descriptor:com.tectonic.ui:text'
+        - 'urn:alm:descriptor:com.tectonic.ui:fieldGroup:global'
+      - displayName: Postgres Config
+        path: global.pgConfig
+        x-descriptors:
+        - 'urn:alm:descriptor:com.tectonic.ui:text'
+        - 'urn:alm:descriptor:com.tectonic.ui:fieldGroup:global'
+      - displayName: Postgres Password Secret Key
+        path: global.pgConfig.password.secretKey
+        x-descriptors:
+        - 'urn:alm:descriptor:com.tectonic.ui:text'
+        - 'urn:alm:descriptor:com.tectonic.ui:fieldGroup:global'
+      - displayName: Postgres Password Secret Name
+        path: global.pgConfig.password.secretName
+        x-descriptors:
+        - 'urn:alm:descriptor:com.tectonic.ui:text'
+        - 'urn:alm:descriptor:com.tectonic.ui:fieldGroup:global'
+      - displayName: Postgres User Name
+        path: global.pgConfig.userName
+        x-descriptors:
+        - 'urn:alm:descriptor:com.tectonic.ui:text'
+        - 'urn:alm:descriptor:com.tectonic.ui:fieldGroup:global'
+      - displayName: Redis Config
+        path: global.redisConfig
+        x-descriptors:
+        - 'urn:alm:descriptor:com.tectonic.ui:text'
+        - 'urn:alm:descriptor:com.tectonic.ui:fieldGroup:global'
+      - displayName: Redis Enabled
+        path: global.redisConfig.enabled
+        x-descriptors:
+        - 'urn:alm:descriptor:com.tectonic.ui:boolean'
+        - 'urn:alm:descriptor:com.tectonic.ui:fieldGroup:global'
+      - displayName: Redis Host
+        path: global.redisConfig.host
+        x-descriptors:
+        - 'urn:alm:descriptor:com.tectonic.ui:text'
+        - 'urn:alm:descriptor:com.tectonic.ui:fieldGroup:global'
+      - displayName: Minio Config
+        path: global.minioConfig
+        x-descriptors:
+        - 'urn:alm:descriptor:com.tectonic.ui:text'
+        - 'urn:alm:descriptor:com.tectonic.ui:fieldGroup:global'
+      - displayName: Minio Enabled
+        path: global.minioConfig.enabled
+        x-descriptors:
+        - 'urn:alm:descriptor:com.tectonic.ui:boolean'
+        - 'urn:alm:descriptor:com.tectonic.ui:fieldGroup:global'
+  description: Deploy Label Studio Enterprise on a Openshift Cluster
+  displayName: lse-operator
+  icon:
+  - base64data: "iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAYAAACJm/9dAAAEBklEQVR4nOzdMWueVRjH4fu8DSKIIkIaEEEEQVfBoYuzJoNQwU0Q5+J3cFEHF0GdFXS3S5PJwY+gQ7GzUDRFEaQFNe9zpAmI4H/wRHhOqNe1H+6b0B/vGQ5PNwX8gzAgEAYEwoBAGBAIAwJhQCAMCIQBgTAgEAYEwoBAGBAIAwJhQCAMCIQBgTAgEAYEwoBAGBAIAwJhQCAMCIQBgTAgEAYEwoBgZ61B/ejJ56q2T601b0hvJ+3gh69nrzFbP9y7Uq0emb1H1u+0/eNv15q2WhhLnbxdS7+21rwRrerXqnps9h6z9b582ns9P3uPpLV2vaqurjXPVQoCYUAgDAiEAYEwIBAGBMKAQBgQCAMCYUAgDAiEAcFqjwgvsl716PbGbp+9x2z/+z/A3/jFgEAYEAgDAmFAIAwIhAGBMCAQBgTCgEAYEAgDAmFA4BHh2Vfufm/L8snsPWbrbfNmr/7E7D0uAmHU6bcpT6ral7PXmG95raoJw1UKMmFAIAwIhAGBMCAQBgTCgEAYEAgDAmFAIAwIVnsrtamdj2qzHXqP1PvyQe/1wtic9k5V/2VouVZbn+E7/W+d329VD4+cWao+HJ7T6vvWNm+Nnep3Ruf8F6uF0fZv36qqWyNnlsPLPw9/OLLVN7XUT0NnRHGmt5vDZ9p55tTddvDjV+c4uRpXKQiEAYEwIBAGBMKAQBgQCAMCYUAgDAiEAYEwIBAGBMKAQBgQCAMCYUAgDAiEAYEwIBAGBMKAQBgQCAMCYUAgDAiEAYEwIBAGBMKAQBgQCAMCYUAgDAiEAYEwIBAGBMKAQBgQCAMCYUAgDAiEAYEwIBAGBMKAQBgQCAMCYUAgDAiEAYEwIBAGBMKAQBgQCAMCYUAgDAiEAYEwIBAGBMKAQBgQCAMCYUCws9agfrT36lJ1ZejQ0p8dnlP1Rr/U7o2c2fT+Ry312eisB86mXl9ae3zozNLH57S2uz3ae2/kyKb6zbZ//MX4sPNpaw3aHl3+uJZ+ba15I1rVvdbrldl7zNZb/7xXe3r2Hklr7frm4PjqWvNcpSAQBgTCgEAYEAgDAmFAIAwIhAGBMCAQBgTCgGC1R4QXWquHetW7s9eYrm12q5/jUeADSBhV9/8t3P87vDR7j+lE8RdXKQiEAYEwIBAGBMKAQBgQCAMCYUAgDAiEAYEwIPBW6uxjXnfbpZ0XZ+8xWz85OezVn5m9x0UgjDp9PLe0l29/N3uN2ZYbu7/N3uGicJWCQBgQCAMCYUAgDAiEAYEwIBAGBMKAQBgQCAMCYQDw7/jFgEAYEAgDAmFAIAwIhAGBMCAQBgTCgEAYEAgDAmFAIAwIhAGBMCAQBgTCgEAYEAgDAmFAIAwIhAGBMCD4MwAA//+RyIhhlnydQQAAAABJRU5ErkJggg==
+"
+    mediatype: ""
+  install:
+    spec:
+      clusterPermissions:
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - namespaces
+          verbs:
+          - get
+        - apiGroups:
+          - ""
+          resources:
+          - secrets
+          verbs:
+          - '*'
+        - apiGroups:
+          - ""
+          resources:
+          - events
+          verbs:
+          - create
+        - apiGroups:
+          - charts.my.domain
+          resources:
+          - labelstudioenterprises
+          - labelstudioenterprises/status
+          - labelstudioenterprises/finalizers
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - ""
+          resources:
+          - pods
+          - services
+          - services/finalizers
+          - endpoints
+          - persistentvolumeclaims
+          - events
+          - configmaps
+          - secrets
+          - ingresses
+          - serviceaccounts
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - apps
+          resources:
+          - deployments
+          - daemonsets
+          - replicasets
+          - statefulsets
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - networking.k8s.io
+          resources:
+          - ingresses
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - authentication.k8s.io
+          resources:
+          - tokenreviews
+          verbs:
+          - create
+        - apiGroups:
+          - authorization.k8s.io
+          resources:
+          - subjectaccessreviews
+          verbs:
+          - create
+        serviceAccountName: lse-controller-manager
+      deployments:
+      - label:
+          control-plane: controller-manager
+        name: lse-controller-manager
+        spec:
+          replicas: 1
+          selector:
+            matchLabels:
+              control-plane: controller-manager
+          strategy: {}
+          template:
+            metadata:
+              annotations:
+                kubectl.kubernetes.io/default-container: manager
+              labels:
+                control-plane: controller-manager
+            spec:
+              containers:
+              - args:
+                - --secure-listen-address=0.0.0.0:8443
+                - --upstream=http://127.0.0.1:8080/
+                - --logtostderr=true
+                - --v=0
+                image: gcr.io/kubebuilder/kube-rbac-proxy:v0.11.0
+                name: kube-rbac-proxy
+                ports:
+                - containerPort: 8443
+                  name: https
+                  protocol: TCP
+                resources:
+                  limits:
+                    cpu: 500m
+                    memory: 128Mi
+                  requests:
+                    cpu: 5m
+                    memory: 64Mi
+                securityContext:
+                  allowPrivilegeEscalation: false
+              - args:
+                - --health-probe-bind-address=:8081
+                - --metrics-bind-address=127.0.0.1:8080
+                - --leader-elect
+                - --leader-election-id=label-studio-enterprise-operator
+                image: quay.io/yoza/lse-controller:latest
+                livenessProbe:
+                  httpGet:
+                    path: /healthz
+                    port: 8081
+                  initialDelaySeconds: 15
+                  periodSeconds: 20
+                name: manager
+                readinessProbe:
+                  httpGet:
+                    path: /readyz
+                    port: 8081
+                  initialDelaySeconds: 5
+                  periodSeconds: 10
+                resources:
+                  limits:
+                    cpu: 500m
+                    memory: 128Mi
+                  requests:
+                    cpu: 10m
+                    memory: 64Mi
+                securityContext:
+                  allowPrivilegeEscalation: false
+              securityContext:
+                runAsNonRoot: true
+              serviceAccountName: lse-controller-manager
+              terminationGracePeriodSeconds: 10
+      permissions:
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - configmaps
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+          - delete
+        - apiGroups:
+          - coordination.k8s.io
+          resources:
+          - leases
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+          - delete
+        - apiGroups:
+          - ""
+          resources:
+          - events
+          verbs:
+          - create
+          - patch
+        serviceAccountName: lse-controller-manager
+    strategy: deployment
+  installModes:
+  - supported: true
+    type: OwnNamespace
+  - supported: true
+    type: SingleNamespace
+  - supported: false
+    type: MultiNamespace
+  - supported: false
+    type: AllNamespaces
+  keywords:
+  - label studio
+  - lse
+  links:
+  - name: Label Studio Enterprise Operator
+    url: https://label-studio-enterprise-operator.domain
+  maturity: alpha
+  provider:
+    name: label-studio
+    url: https://labelstud.io/
+  version: 0.0.1
